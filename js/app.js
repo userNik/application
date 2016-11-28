@@ -57,6 +57,7 @@ angular.module('App', ['ngRoute'])
              value:'',
              error:false
            },
+          status: null,
           validateFields: function(form){
             var self = this;
             self.fieldsName.forEach(prop => {
@@ -88,9 +89,10 @@ angular.module('App', ['ngRoute'])
            },
            showCurrentItem: function(item){
              var self = this;
+
              $location.url('/create');
-             $scope.itemBox.name = item.name;
-             $scope.itemBox.desc = item.desc;
+             self.name.value = item.name;
+             self.desc.value = item.desc;
            },
 
            removeCurrentItem: function(item){
