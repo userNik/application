@@ -2,6 +2,25 @@ angular.module('App')
 .controller('itemViewCtrl', ['$rootScope', '$scope', 'itemSvc', '$location', '$timeout', function($rootScope, $scope, itemSvc, $location, $timeout){
 
   $scope.items = itemSvc;
+  $scope.itemsList = itemSvc.getListItem();
+  $scope.totalItems = itemSvc.getListItem().length;
+  $scope.currentPage = 1;
+  $scope.perPage = 5;
+  $scope.maxSize = 5;
+  $scope.bigTotalItems = 175;
+  $scope.bigCurrentPage = 1;
+  $scope.setPage = function (pageNo) {
+    console.log(pageNo, 'pageNo');
+    $scope.currentPage = pageNo;
+  };
+  $scope.pageChanged = function() {
+    console.log($scope.currentPage, '$scope.currentPage');
+    var begin = $scope.totalItems - 1
+    , end = begin + $scope.perPage;
+    $scope.itemsList = itemSvc.getListItem().slice(begin, end);
+    console.log($scope.itemsList);
+    //$log.log('Page changed to: ' + $scope.currentPage);
+  };
 
   $scope.itemBox = {
    validateFields: function(form){
@@ -58,11 +77,19 @@ angular.module('App')
     },
 
     removeCurrentItem: function(item, index){
-      if(confirm('Are you serious???')){
-        itemSvc.getListItem().splice(index, 1);
-      }
-
+      $rootScope.modal.visible = true;
+      $rootScope.modal.title = item.name;
+      itemSvc.itemBox.currentItem = {
+        item:item,
+        index:index
+      };
     }
   };
+  $rootScope.$on('successState', function(){
+    if(typeof itemSvc.itemBox.currentItem.index !== 'undefined'){
+      itemSvc.getListItem().splice(itemSvc.itemBox.currentItem.index, 1);
+      itemSvc.itemBox.currentItem = {};
+    }
+  });
 
 }])

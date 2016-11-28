@@ -33,7 +33,8 @@ angular.module('App')
       value:'',
       error:false
     },
-    mode:null
+    mode:null,
+    currentItem:{}
   };
   obj.activeClass = currentView;
 
