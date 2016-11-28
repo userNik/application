@@ -1,0 +1,24 @@
+<div class="well">
+  <input type="text"
+  class="form-control"
+  ng-model="searchItem"
+  placeholder="Text input">
+</div>
+<div class="row">
+
+  <div class="col-sm-6 col-md-4" ng-repeat="item in items.getListItem() | filter : searchItem">
+    <div class="thumbnail">
+      <img src="..." alt="...">
+      <div class="caption">
+        <h3>{{item.name}}</h3>
+        <p>{{item.desc}}</p>
+        <p><a href=""
+          class="btn btn-primary"
+          ng-click="itemBox.showCurrentItem(item)"
+          role="button">Edit / Show</a> <a href=""
+          class="btn btn-danger"
+          ng-click="itemBox.removeCurrentItem(item)" role="button">Remove</a></p>
+      </div>
+    </div>
+  </div>
+</div>
