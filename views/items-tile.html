@@ -9,14 +9,14 @@
   <div class="col-sm-6 col-md-4" ng-repeat="item in items.getListItem() | filter : searchItem">
     <div class="thumbnail">
       <div class="caption">
-        <h3>{{item.name}}</h3>
+        <h3 ng-click="itemBox.showCurrentItem(item, $index)">{{item.name}}</h3>
         <p>{{item.desc}}</p>
         <p><a href=""
           class="btn btn-primary"
-          ng-click="itemBox.showCurrentItem(item)"
+          ng-click="itemBox.showCurrentItem(item, $index)"
           role="button">Edit / Show</a> <a href=""
           class="btn btn-danger"
-          ng-click="itemBox.removeCurrentItem(item)" role="button">Remove</a></p>
+          ng-click="itemBox.removeCurrentItem(item, $index)" role="button">Remove</a></p>
       </div>
     </div>
   </div>

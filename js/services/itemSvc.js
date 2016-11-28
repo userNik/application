@@ -16,19 +16,26 @@ angular.module('App')
     tile:'views/items-tile.html'
   };
 
+  function defineUrlState(){
+    var loc = location;
+    return loc.href.lastIndexOf('=') !== -1 ? loc.href.slice(loc.href.lastIndexOf('=') + 1, loc.href.length) : 'create';
+  }
+
+  currentView = defineUrlState();
+
   obj.itemBox = {
     fieldsName:['name', 'desc'],
     name:{
       value:'',
       error:false,
     },
-
     desc: {
       value:'',
       error:false
     },
     mode:null
   };
+  obj.activeClass = currentView;
 
   obj.currentView = function(state){
     if(state){

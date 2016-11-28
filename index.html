@@ -8,14 +8,14 @@
 <body>
 	<div class="container" ng-controller="MainCtrl">
 		<h1>Testing task</h1>
-		<nav class="navigation">
+		<nav class="navbar">
 			<ul class="nav nav-pills">
 			  <li ng-class="{'active': activeClass === 'table'}"><a href="#/items?view=table" ng-click="switchStateView('table')">Items table view</a></li>
 			  <li ng-class="{'active': activeClass === 'tile'}"><a href="#/items?view=tile" ng-click="switchStateView('tile')">Items tile view</a></li>
-			  <li ng-class="{'active': activeClass === 'create'}"><a href="#/create" ng-click="switchStateView('create'); itemBox.clearData()">Create/add item</a></li>
+			  <li ng-class="{'active': activeClass === 'create'}"><a href="#/create" ng-click="switchStateView('create'); clearData()">Create/add item</a></li>
 			</ul>
 		</nav>
-		<div class="well well-lg">...</div>
+		<div class="well well-lg"><b class="text-uppercase">Item list</b></div>
 		<ng-view></ng-view>
 	</div>
 	<script src="bower_components/angular/angular.js"></script>

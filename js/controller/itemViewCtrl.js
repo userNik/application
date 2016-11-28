@@ -1,16 +1,6 @@
 angular.module('App')
-.controller('itemViewCtrl', ['$scope', 'itemSvc', '$location', '$timeout', function($scope, itemSvc, $location, $timeout){
-  console.log('init count');
-  function defineUrlState(){
-    var loc = location;
-    return loc.href.lastIndexOf('=') !== -1 ? loc.href.slice(loc.href.lastIndexOf('=') + 1, loc.href.length) : null;
-  }
-   $scope.activeClass = defineUrlState();
-   $scope.typeView = itemSvc.currentView(defineUrlState());
-   $scope.switchStateView = function(state){
-      $scope.typeView = itemSvc.currentView(state);
-      $scope.activeClass = state;
-  }
+.controller('itemViewCtrl', ['$rootScope', '$scope', 'itemSvc', '$location', '$timeout', function($rootScope, $scope, itemSvc, $location, $timeout){
+
   $scope.items = itemSvc;
 
   $scope.itemBox = {
@@ -27,12 +17,12 @@ angular.module('App')
      });
    },
 
-   clearData: function(){
-     var obj = $scope.items.itemBox;
-     obj.fieldsName.forEach(prop => {
-       obj[prop].value = '';
-     });
-     obj.mode = null;
+   editItem: function(itemBox){
+     var obj = itemSvc.getListItem()[itemBox.position];
+     obj.name = itemBox.name.value;
+     obj.desc = itemBox.desc.value;
+     itemSvc.currentView('tile');
+     $location.url('/items?view=tile');
    },
     sendData: function(form){
       var self = this;
@@ -48,31 +38,31 @@ angular.module('App')
           desc:itemSvc.itemBox.desc.value,
         }
         itemSvc.addItem(dto);
-        itemSvc.currentView('tile');
-        $location.url('/items?view=tile')
+        $rootScope.typeView = itemSvc.currentView('tile');
+        $rootScope.activeClass = 'tile';
+        $location.url('/items?view=tile');
 
       }
       else{
          this.validateFields(form);
       }
     },
-    showCurrentItem: function(item){
+    showCurrentItem: function(item, index){
       var self = this;
       itemSvc.itemBox.name.value = item.name;
       itemSvc.itemBox.desc.value = item.desc;
       itemSvc.itemBox.mode = true;
+      itemSvc.itemBox.position = index;
       $location.url('/create');
+      $rootScope.$broadcast('editMode', {});
     },
 
-    removeCurrentItem: function(item){
+    removeCurrentItem: function(item, index){
       if(confirm('Are you serious???')){
-        itemSvc.getListItem().forEach((prop, index, arr) => {
-          if(prop.id === item.id){
-            arr.splice(index, 1);
-          }
-        });
+        itemSvc.getListItem().splice(index, 1);
       }
 
     }
   };
+
 }])
