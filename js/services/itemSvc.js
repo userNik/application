@@ -27,7 +27,8 @@ angular.module('App')
     image:{
       value:''
     },
-    mode:null
+    mode:null,
+    itemSize: null,
   };
   obj.activeClass = currentView;
 

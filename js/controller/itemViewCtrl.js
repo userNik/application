@@ -4,6 +4,7 @@ angular.module('App')
     return itemSvc.getListItem()
       .then(response => {
           $scope.itemsList = response.data;
+          itemSvc.itemBox.itemSize = $scope.itemsList.length;
       });
   }
 
@@ -63,7 +64,6 @@ angular.module('App')
              $rootScope.activeClass = 'tile';
              $location.url('/items?view=tile');
            });
-
       }
       else{
          this.validateFields(form);
@@ -84,7 +84,6 @@ angular.module('App')
       $rootScope.modal.title = item.name;
       itemSvc.removeItem(index)
          .then(response => {});
-
     }
   };
   $rootScope.$on('successState', function(){
@@ -94,7 +93,8 @@ angular.module('App')
   $rootScope.$on('pageChanged', function(e, data){
     var begin = ((data.currentPage - 1) * $scope.perPage)
     , end = begin + $scope.perPage;
-    $scope.itemsList = itemSvc.getListItem().slice(begin, end);
+    getListItem().then(response => {
+      $scope.itemsList = $scope.itemsList.slice(begin, end);
+    });
   });
-
-}])
+}]);
