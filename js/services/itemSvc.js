@@ -1,22 +1,11 @@
 angular.module('App')
-.factory('itemSvc', [function(){
+.factory('itemSvc', ['$http', function($http){
   var obj = {},
      currentView,
-     items = [{
-       id:0,
-       name:'Angular',
-       desc:'MVC framework',
-       src:'http://csharpcorner.mindcrackerinc.netdna-cdn.com/UploadFile/BlogImages/04042016115821AM/AngularImage.png'
-     },{
-       id:1,
-       name:'React',
-       desc:'View libary',
-       src:'http://react-etc.net/files/2016-07/logo-578x270.png'
-     }],
-   srcView = {
-    table:'views/items-table.html',
-    tile:'views/items-tile.html'
-  };
+     srcView = {
+      table:'views/items-table.html',
+      tile:'views/items-tile.html'
+    };
 
   function defineUrlState(){
     var loc = location;
@@ -38,8 +27,7 @@ angular.module('App')
     image:{
       value:''
     },
-    mode:null,
-    currentItem:{}
+    mode:null
   };
   obj.activeClass = currentView;
 
@@ -53,10 +41,41 @@ angular.module('App')
     }
   };
   obj.getListItem = function(){
-    return items;
+    return $http({
+      method:'GET',
+      url:'/item/list'
+    });
   };
-  obj.addItem = function(item){
-    items.push(item);
+
+  obj.editItem = function(dto, index){
+    return $http({
+      method:'PUT',
+      url:'/item/list',
+      data: {
+        dto:dto,
+        index:index
+      }
+    });
   };
+
+  obj.removeItem = function(index){
+    return $http({
+      method:'DELETE',
+      url:'/item/list',
+      data: {
+        index:index
+      }
+    });
+  };
+
+  obj.makeRequest = function(dto){
+    return $http({
+      method:'POST',
+      url:'/item/list',
+      data:{
+        data: dto
+      }
+    })
+  }
   return obj;
 }]);

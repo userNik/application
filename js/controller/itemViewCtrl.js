@@ -1,8 +1,15 @@
 angular.module('App')
 .controller('itemViewCtrl', ['$rootScope', '$scope', 'itemSvc', '$location', '$timeout', 'Upload', function($rootScope, $scope, itemSvc, $location, $timeout, Upload){
+  function getListItem(){
+    return itemSvc.getListItem()
+      .then(response => {
+          $scope.itemsList = response.data;
+      });
+  }
 
   $scope.items = itemSvc;
-  $scope.itemsList = itemSvc.getListItem();
+  $scope.itemsList = [];
+  getListItem();
   $scope.perPage = 5;
   $scope.itemBox = {
    validateFields: function(form){
@@ -19,15 +26,24 @@ angular.module('App')
    },
 
    editItem: function(itemBox){
-     var obj = itemSvc.getListItem()[itemBox.position];
-     obj.name = itemBox.name.value;
-     obj.desc = itemBox.desc.value;
-     itemSvc.currentView('tile');
-     $location.url('/items?view=tile');
+    var dto = {
+      name: itemBox.name.value,
+      desc: itemBox.desc.value,
+      src: itemBox.image.value,
+    };
+    itemSvc.editItem(dto, itemBox.position)
+      .then(response => {
+         itemSvc.currentView('tile');
+         $location.url('/items?view=tile');
+      })
    },
     sendData: function(form){
       var self = this;
       if(form.$valid){
+
+        if(Upload.blobUrls &&  Upload.blobUrls.length){
+          itemSvc.itemBox.image.value = Upload.blobUrls[0].url;
+        }
 
         if(itemSvc.itemBox.mode){
           self.editItem(itemSvc.itemBox);
@@ -38,13 +54,15 @@ angular.module('App')
           id:itemSvc.getListItem().length,
           name:itemSvc.itemBox.name.value,
           desc:itemSvc.itemBox.desc.value,
-          src: Upload.blobUrls[0].url
+          src: itemSvc.itemBox.image.value
         };
         Upload.blobUrls = [];
-        itemSvc.addItem(dto);
-        $rootScope.typeView = itemSvc.currentView('tile');
-        $rootScope.activeClass = 'tile';
-        $location.url('/items?view=tile');
+        itemSvc.makeRequest(dto)
+           .then(response => {
+             $rootScope.typeView = itemSvc.currentView('tile');
+             $rootScope.activeClass = 'tile';
+             $location.url('/items?view=tile');
+           });
 
       }
       else{
@@ -61,24 +79,16 @@ angular.module('App')
       $rootScope.activeClass = 'create';
     },
 
-    defineImage: function(arguments){
-      console.log(arguments);
-    },
-
     removeCurrentItem: function(item, index){
       $rootScope.modal.visible = true;
       $rootScope.modal.title = item.name;
-      itemSvc.itemBox.currentItem = {
-        item:item,
-        index:index
-      };
+      itemSvc.removeItem(index)
+         .then(response => {});
+
     }
   };
   $rootScope.$on('successState', function(){
-    if(typeof itemSvc.itemBox.currentItem.index !== 'undefined'){
-      itemSvc.getListItem().splice(itemSvc.itemBox.currentItem.index, 1);
-      itemSvc.itemBox.currentItem = {};
-    }
+    getListItem();
   });
 
   $rootScope.$on('pageChanged', function(e, data){
