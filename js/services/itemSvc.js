@@ -5,11 +5,13 @@ angular.module('App')
      items = [{
        id:0,
        name:'Angular',
-       desc:'MVC framework'
+       desc:'MVC framework',
+       src:'http://csharpcorner.mindcrackerinc.netdna-cdn.com/UploadFile/BlogImages/04042016115821AM/AngularImage.png'
      },{
        id:1,
        name:'React',
-       desc:'View libary'
+       desc:'View libary',
+       src:'http://react-etc.net/files/2016-07/logo-578x270.png'
      }],
    srcView = {
     table:'views/items-table.html',
@@ -24,7 +26,7 @@ angular.module('App')
   currentView = defineUrlState();
 
   obj.itemBox = {
-    fieldsName:['name', 'desc'],
+    fieldsName:['name', 'desc', 'image'],
     name:{
       value:'',
       error:false,
@@ -32,6 +34,9 @@ angular.module('App')
     desc: {
       value:'',
       error:false
+    },
+    image:{
+      value:''
     },
     mode:null,
     currentItem:{}

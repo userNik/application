@@ -1,5 +1,5 @@
 angular.module('App')
-.controller('itemViewCtrl', ['$rootScope', '$scope', 'itemSvc', '$location', '$timeout', function($rootScope, $scope, itemSvc, $location, $timeout){
+.controller('itemViewCtrl', ['$rootScope', '$scope', 'itemSvc', '$location', '$timeout', 'Upload', function($rootScope, $scope, itemSvc, $location, $timeout, Upload){
 
   $scope.items = itemSvc;
   $scope.itemsList = itemSvc.getListItem();
@@ -33,11 +33,14 @@ angular.module('App')
           self.editItem(itemSvc.itemBox);
           return;
         }
+
         var dto = {
           id:itemSvc.getListItem().length,
           name:itemSvc.itemBox.name.value,
           desc:itemSvc.itemBox.desc.value,
-        }
+          src: Upload.blobUrls[0].url
+        };
+        Upload.blobUrls = [];
         itemSvc.addItem(dto);
         $rootScope.typeView = itemSvc.currentView('tile');
         $rootScope.activeClass = 'tile';
@@ -55,7 +58,11 @@ angular.module('App')
       itemSvc.itemBox.mode = true;
       itemSvc.itemBox.position = index;
       $location.url('/create');
-      $rootScope.$broadcast('editMode', {});
+      $rootScope.activeClass = 'create';
+    },
+
+    defineImage: function(arguments){
+      console.log(arguments);
     },
 
     removeCurrentItem: function(item, index){
