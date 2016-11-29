@@ -43,7 +43,8 @@ angular.module('App')
       if(form.$valid){
 
         if(Upload.blobUrls &&  Upload.blobUrls.length){
-          itemSvc.itemBox.image.value = Upload.blobUrls[0].url;
+          itemSvc.itemBox.image.value.url = Upload.blobUrls[0].url;
+          Upload.blobUrls = [];
         }
 
         if(itemSvc.itemBox.mode){
@@ -57,7 +58,7 @@ angular.module('App')
           desc:itemSvc.itemBox.desc.value,
           src: itemSvc.itemBox.image.value
         };
-        Upload.blobUrls = [];
+
         itemSvc.makeRequest(dto)
            .then(response => {
              $rootScope.typeView = itemSvc.currentView('tile');
@@ -73,6 +74,12 @@ angular.module('App')
       var self = this;
       itemSvc.itemBox.name.value = item.name;
       itemSvc.itemBox.desc.value = item.desc;
+      itemSvc.itemBox.image.value = item.src;
+      setTimeout(() =>{
+        var img = document.querySelector('.jsImageThumb');
+        img.setAttribute('src', item.src.url);
+        img.classList.remove('ng-hide');
+      }, 200);
       itemSvc.itemBox.mode = true;
       itemSvc.itemBox.position = index;
       $location.url('/create');

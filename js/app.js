@@ -32,17 +32,7 @@ angular.module('App', ['ngRoute', 'ui.bootstrap', 'ngFileUpload', 'ngMockE2E'])
             });
        }])
        .run(function($httpBackend){
-         var items = [{
-           id:0,
-           name:'Angular',
-           desc:'MVC framework',
-           src:'http://csharpcorner.mindcrackerinc.netdna-cdn.com/UploadFile/BlogImages/04042016115821AM/AngularImage.png'
-         },{
-           id:1,
-           name:'React',
-           desc:'View libary',
-           src:'http://react-etc.net/files/2016-07/logo-578x270.png'
-         }];
+         var items = [];
           $httpBackend.whenGET(/views\/.*/).passThrough();
           $httpBackend.whenGET('/item/list').respond(200, items);
           $httpBackend.whenPOST('/item/list').respond(function(method, url, data){

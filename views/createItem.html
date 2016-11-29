@@ -39,7 +39,7 @@
                 ng-model="items.itemBox.image.value"
                 accept="image/*" ngf-max-size="2MB" required>
           <img ng-show="ItemViewForm.image.$valid"        ngf-thumbnail="items.itemBox.image.value"
-                style="width:180px; height:100px;" class="thumbnail">
+                style="width:180px; height:100px;" class="thumbnail jsImageThumb">
           <button
           class="btn btn-default"
           ng-click="items.itemBox.image.value = null" ng-show="items.itemBox.image.value">Remove</button>

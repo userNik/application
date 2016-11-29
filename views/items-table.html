@@ -8,7 +8,7 @@
   <table class="table table-hover">
      <tr ng-repeat="item in itemsList | filter : searchItem | limitTo: perPage">
        <td>{{$index}}</td>
-       <td><img ng-src="{{item.src}}"
+       <td><img ng-src="{{item.src.url}}"
                 alt="{{item.name}}"
                 style="height:30px;"></td>
        <td>{{item.name}}</td>
