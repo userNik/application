@@ -3,25 +3,7 @@ angular.module('App')
 
   $scope.items = itemSvc;
   $scope.itemsList = itemSvc.getListItem();
-  $scope.totalItems = itemSvc.getListItem().length;
-  $scope.currentPage = 1;
   $scope.perPage = 5;
-  $scope.maxSize = 5;
-  $scope.bigTotalItems = 175;
-  $scope.bigCurrentPage = 1;
-  $scope.setPage = function (pageNo) {
-    console.log(pageNo, 'pageNo');
-    $scope.currentPage = pageNo;
-  };
-  $scope.pageChanged = function() {
-    console.log($scope.currentPage, '$scope.currentPage');
-    var begin = $scope.totalItems - 1
-    , end = begin + $scope.perPage;
-    $scope.itemsList = itemSvc.getListItem().slice(begin, end);
-    console.log($scope.itemsList);
-    //$log.log('Page changed to: ' + $scope.currentPage);
-  };
-
   $scope.itemBox = {
    validateFields: function(form){
      var obj = $scope.items.itemBox;
@@ -90,6 +72,12 @@ angular.module('App')
       itemSvc.getListItem().splice(itemSvc.itemBox.currentItem.index, 1);
       itemSvc.itemBox.currentItem = {};
     }
+  });
+
+  $rootScope.$on('pageChanged', function(e, data){
+    var begin = ((data.currentPage - 1) * $scope.perPage)
+    , end = begin + $scope.perPage;
+    $scope.itemsList = itemSvc.getListItem().slice(begin, end);
   });
 
 }])

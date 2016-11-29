@@ -22,11 +22,13 @@ angular.module('App')
     $rootScope.$broadcast('successState', {});
   }
 
-  $scope.clearData = function(){
+  $scope.clearData = function(mode){
     var obj = itemSvc.itemBox;
     obj.fieldsName.forEach(prop => {
       obj[prop].value = '';
     });
-    obj.mode = null;
+    if(mode){
+      obj.mode = null;
+    }
   };
 }])

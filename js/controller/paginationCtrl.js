@@ -1,15 +1,15 @@
 angular.module('App')
-   .controller('PaginationCtrl', ['$scope', '$log', function($scope, $log){
-       $scope.totalItems = 64;
-       $scope.currentPage = 4;
-
+   .controller('PaginationCtrl', ['$rootScope', '$scope', '$log', function($rootScope, $scope, $log){
+       $scope.totalItems = $scope.itemsList.length;
+       $scope.currentPage = 1;
        $scope.setPage = function (pageNo) {
          $scope.currentPage = pageNo;
        };
 
        $scope.pageChanged = function() {
-         console.log($scope.currentPage, '$scope.currentPage');
-         //$log.log('Page changed to: ' + $scope.currentPage);
+         $rootScope.$broadcast('pageChanged', {
+           currentPage:$scope.currentPage
+         });
        };
 
        $scope.maxSize = 5;
