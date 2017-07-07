@@ -31,20 +31,22 @@ export class YoutubeApi {
           resolve(data.items);
         }
       });
-    }).then((items: any) => {
-      let votesPromises = [];
-      this.findItemState.clearItems();
-      items.forEach((item: any) => {
-        let videoId = item.id.videoId;
-        let title = item.snippet.title;
-        let thumb = item.snippet.thumbnails.medium.url;
-        this.findItemState.addQueryItems({ videoId, title, thumb });
-        votesPromises.push(this.createPromiseForVotes(videoId));
-      });
-      return votesPromises;
-    }).then((votesPromises: any[]) => {
-      return this.receiveAllVotesByVideoId(votesPromises);
-    }).then(votesItem => this.findItemState.mergeWithVotesItems(votesItem));
+    }).then(items => this.processFindItemByQuery(items))
+      .then(votesPromises => this.receiveAllVotesByVideoId(votesPromises))
+      .then(votesItem => this.findItemState.mergeWithVotesItems(votesItem));
+  }
+
+  private processFindItemByQuery(items: any) {
+    let votesPromises = [];
+    this.findItemState.clearItems();
+    items.forEach((item: any) => {
+      let videoId = item.id.videoId;
+      let title = item.snippet.title;
+      let thumb = item.snippet.thumbnails.medium.url;
+      this.findItemState.addQueryItems({ videoId, title, thumb });
+      votesPromises.push(this.createPromiseForVotes(videoId));
+    });
+    return votesPromises;
   }
 
   private createPromiseForVotes(videoID: string) {
