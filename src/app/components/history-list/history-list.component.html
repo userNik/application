@@ -1,0 +1,13 @@
+<div class="history-list">
+  <div class="history-inner">
+    <h3 class="history-ttl">Watch history</h3>
+    <div class="history-box">
+      <history-item
+          *ngFor="let item of historyItemState.historyItems"
+          [historyData]="item"
+          (removeItem)="onRemoveItem($event)"
+          (selectItem)="onSelectItem($event)">
+        </history-item>
+    </div>
+  </div>
+</div>
