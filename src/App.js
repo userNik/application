@@ -1,29 +1,27 @@
-import React, { useRef, useEffect } from 'react';
-import ShakaPlayer from 'shaka-player-react';
+import React, { useState } from 'react';
+
+import Chart from "./components/Chart";
+import Player from "./components/Player";
+import ErrorView from "./components/ErrorView"
+
+import "./App.css";
 
 function App() {
-  const src = "https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd";
-  const playerRef = useRef(null);
+  const [isError, markAsError] = useState(false);
 
-  useEffect(() => {
-    const { player, videoElement } = playerRef.current;
-    console.log(player, "player");
-    console.log(videoElement, "videoElement");
-
-    async function loadAsset() {
-      // Load an asset.
-      await player.load(src);
-
-      // Trigger play.
-      // videoElement.play();
-    }
-
-    loadAsset().then();
-
-  }, []);
+  if (isError) {
+    return <ErrorView />
+  }
 
   return (
-      <ShakaPlayer ref={playerRef} />
+      <main className="container">
+        <div className="video-content">
+          <Player markAsError={markAsError}/>
+        </div>
+        <div className="chart-content">
+          <Chart />
+        </div>
+      </main>
   );
 }
 
