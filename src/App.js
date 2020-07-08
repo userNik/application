@@ -1,26 +1,12 @@
-import React, { useState } from 'react';
+import React from "react";
+import Routes from "./routes";
 
-import Chart from "./components/Chart";
-import Player from "./components/Player";
-import ErrorView from "./components/ErrorView"
-
-import "./App.css";
+import "./App.scss";
 
 function App() {
-  const [isError, markAsError] = useState(false);
-
-  if (isError) {
-    return <ErrorView />
-  }
-
   return (
-      <main className="container">
-        <div className="video-content">
-          <Player markAsError={markAsError}/>
-        </div>
-        <div className="chart-content">
-          <Chart />
-        </div>
+      <main className="app">
+          <Routes />
       </main>
   );
 }
