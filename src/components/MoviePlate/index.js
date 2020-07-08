@@ -9,9 +9,7 @@ import "./MoviePlate.scss";
 const MoviePlate = ({ id, title, poster }) => {
     const [imageSource, setImageSource] = useState(null);
     useEffect(() => {
-        const isNA = isNAPoster(poster);
-
-        if (isNA) {
+        if (isNAPoster(poster)) {
             setImageSource(moviesStore.get("defaultPoster"));
             return;
         }
