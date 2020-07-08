@@ -10,13 +10,7 @@ export const fetchMovies = (query = "") => {
       })
           .then(response => response.json())
           .then(({ Response, Search }) => {
-              if (Response === "True") {
-                  dispatch(updateList(Search));
-              }
-
-              if (Response === "False") {
-                dispatch({ type: CLEAR_LIST })
-              }
+              dispatch(Response === "True" ? updateList(Search) : { type: CLEAR_LIST });
           });
   }
 };

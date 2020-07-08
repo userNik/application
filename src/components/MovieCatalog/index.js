@@ -5,12 +5,15 @@ import NoData from "../NoData";
 import "./MovieCatalog.scss";
 
 const MovieCatalog = ({ items }) => {
-    if (!items.length) {
+    const count = items.length;
+
+    if (!count) {
         return <NoData />;
     }
+    const className = count < 5 ? "movie-box movie-box_no-stretch" : "movie-box";
 
     return (
-        <div className="movie-box">
+        <div className={className}>
             {
                 items.map(({ Poster, Title, imdbID }) =>
                     <MoviePlate
