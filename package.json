@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "csv2xml": "^0.0.4",
+    "lodash.camelcase": "^4.3.0"
+  }
+}
